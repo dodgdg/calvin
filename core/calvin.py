@@ -24,10 +24,12 @@ def main():
             # person move
             col = wait_key(tuple(map(str, game.moves()+1)))
             game = game.move(int(col) - 1)
+            # move = get_move(game, depth=6)
+            # game = game.move(move)
 
         else:
             # calvin move
-            move = get_move(game)
+            move = get_move(game, depth=4)
             game = game.move(move)
 
 

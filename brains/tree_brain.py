@@ -24,10 +24,16 @@ def heuristic(game):
     return position_sum(game.board)
 
 
-def get_move(game):
+def get_move(game, depth=None):
+    depth = depth or MAX_DEPTH
+
+    player = 1.0 if game.turn % 2 == 1 else -1.0
+
     moves = game.moves()
-    scores = [(m, ab_negamax(game.move(m), MAX_DEPTH, -2000.0, 2000.0, 1.0))
+    scores = [(m, ab_negamax(game.move(m), depth, -2000.0, 2000.0, player))
               for m in moves]
+
+    # print(scores)
 
     best = min(s[1] for s in scores)
     choices = [m for m, s in scores if s == best]
