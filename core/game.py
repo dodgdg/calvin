@@ -67,6 +67,13 @@ class Game:
                      connect=self.connect,
                      winner=self.winner or winning(ret, self.connect, (col, height)))
 
+    def skip(self):
+        """skips a turn"""
+        return Game(board=self.board,
+                    turn=self.turn + 1,
+                    connect=self.connect,
+                    winner=self.winner)
+
 
 if __name__ == '__main__':
     b = Game().move(1).move(6).move(2).move(6).move(3).move(6).move(4)
