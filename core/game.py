@@ -63,9 +63,9 @@ class Game:
         ret = self.board.copy()
         ret[col, height] = 1 - (self.turn % 2) * 2
         return Game(board=ret,
-                     turn=self.turn + 1,
-                     connect=self.connect,
-                     winner=self.winner or winning(ret, self.connect, (col, height)))
+                    turn=self.turn + 1,
+                    connect=self.connect,
+                    winner=self.winner or winning(ret, self.connect, (col, height)))
 
     def skip(self):
         """skips a turn"""
