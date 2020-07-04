@@ -27,6 +27,9 @@ def heuristic(game):
 def get_move(game, depth=None):
     depth = depth or MAX_DEPTH
 
+    if game.turn % 2 == 0:
+        depth -= 1  # heuristic depends on both players having same number of counters (I think)
+
     player = 1.0 if game.turn % 2 == 1 else -1.0
 
     moves = game.moves()
