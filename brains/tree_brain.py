@@ -1,11 +1,12 @@
 import numpy as np
 
+from core.config import *
 from core.game import WINNING_LINES
 
 
-VALUE_GRID = np.array([[sum(map(lambda x:len(x[0])-3, WINNING_LINES[(x, y)]))
-                        for y in range(6)]
-                       for x in range(7)])
+VALUE_GRID = np.array([[sum(map(lambda x:len(x[0])-(CONNECT-1), WINNING_LINES[(x, y)]))
+                        for y in range(HEIGHT)]
+                       for x in range(WIDTH)])
 
 
 MAX_DEPTH = 4  # think this should be odd as our heuristic varies a lot from move to move

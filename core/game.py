@@ -1,5 +1,7 @@
 import numpy as np
 
+from core.config import *
+
 
 def get_winning_lines(width, height, connect):
     lines_dic = {}
@@ -29,7 +31,7 @@ def get_winning_lines(width, height, connect):
     return lines_dic
 
 
-WINNING_LINES = get_winning_lines(7, 6, 4)
+WINNING_LINES = get_winning_lines(WIDTH, HEIGHT, CONNECT)
 
 
 def winning(board, connect, last_move):
@@ -44,8 +46,8 @@ def winning(board, connect, last_move):
 
 
 class Game:
-    def __init__(self, board=None, turn=0, connect=4, winner=0):
-        self.board = board if board is not None else np.zeros([7, 6])
+    def __init__(self, board=None, turn=0, connect=CONNECT, winner=0):
+        self.board = board if board is not None else np.zeros([WIDTH, HEIGHT])
         self.width, self.height = self.board.shape
         self.turn = turn
         self.connect = connect

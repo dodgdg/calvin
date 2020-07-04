@@ -1,0 +1,3 @@
+WIDTH = 7
+HEIGHT = 6
+CONNECT = 4
