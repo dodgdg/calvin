@@ -16,9 +16,9 @@ def get_winning_lines(width, height, connect):
             # horizontal
             hori = clip(range(x-(connect-1), x+connect),
                         (2*connect-1)*[y])
-            # vertical - only need to check below
+            # vertical - only need to check below, but I do all to support no-gravity versions etc.
             vert = clip((2*connect-1)*[x],
-                        range(y-(connect-1), y+1))
+                        range(y-(connect-1), y+connect))
             # SW to NE
             swne = clip(range(x-(connect-1), x+connect),
                         range(y-(connect-1), y+connect))

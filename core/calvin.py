@@ -1,8 +1,12 @@
 from console.utils import wait_key
 
 from core.game import Game
+
 from view.console_view import display
-from core.brain import get_move
+# from view.debug_view import display
+
+# from brains.simple_brain import get_move
+from brains.tree_brain import get_move
 
 
 def main():
