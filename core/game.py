@@ -33,20 +33,17 @@ WINNING_LINES = get_winning_lines(7, 6, 4)
 
 
 def winning(board, connect, last_move):
-    if last_move == (1, 3):
-        print()
     # Most recently placed piece must be a part of the winning line - so just check around this point
     for line in WINNING_LINES[last_move]:
         cumulative = board[line].cumsum()
         candidates = list(cumulative[connect:] - cumulative[:-connect]) + [cumulative[connect-1]]
-        print(candidates)
         if connect in candidates:
             return 1
         if -connect in candidates:
             return 2
 
 
-class Board:
+class Game:
     def __init__(self, board=None, turn=0, connect=4, winner=0):
         self.board = board if board is not None else np.zeros([7, 6])
         self.width, self.height = self.board.shape
@@ -56,17 +53,22 @@ class Board:
 
         self.winning_lines = get_winning_lines(self.width, self.height, self.connect)
 
+    def moves(self):
+        return np.array(range(self.width))[self.board.prod(axis=1) == 0]
+
     def move(self, col):
         height = int(np.abs(self.board[col]).sum())
         if height >= self.height:
             raise IndexError('Not enough space in board')
         ret = self.board.copy()
         ret[col, height] = 1 - (self.turn % 2) * 2
-        return Board(board=ret,
+        return Game(board=ret,
                      turn=self.turn + 1,
                      connect=self.connect,
                      winner=self.winner or winning(ret, self.connect, (col, height)))
 
 
 if __name__ == '__main__':
-    b = Board().move(1).move(6).move(2).move(6).move(3).move(6).move(4)
+    b = Game().move(1).move(6).move(2).move(6).move(3).move(6).move(4)
+    b.moves()
+
