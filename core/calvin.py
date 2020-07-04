@@ -9,7 +9,7 @@ def main():
     board = Board()
 
     while True:
-        winner = board.winner()
+        winner = board.winner
         display(board, turn=board.turn, winner=winner)
         col = wait_key(tuple(map(str, range(1, board.width+1))))
 
