@@ -15,9 +15,11 @@ def main():
 
     while True:
         winner = game.winner
-        display(game, turn=game.turn, winner=winner)
+        draw = (len(game.moves()) == 0)
 
-        if winner:
+        display(game, turn=game.turn, winner=winner, draw=draw)
+
+        if winner or draw:
             break
 
         if game.turn % 2 == 0:
@@ -29,7 +31,15 @@ def main():
 
         else:
             # calvin move
-            move = get_move(game, depth=4)
+
+            # bit of speed optimisation:
+            if game.turn < 8:
+                depth = 4  # opening
+            elif len(game.moves()) < 5:  # endgame
+                depth = 10
+            else:
+                depth = 6  # middlegame
+            move = get_move(game, depth=depth)
             game = game.move(move)
 
 

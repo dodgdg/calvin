@@ -20,6 +20,10 @@ def winner_msg(winner):
         return fg.red('Calvin won!!!')
 
 
+def draw_msg():
+    return fg.lightgreen('Draw!!!')
+
+
 def turn_msg(turn):
     if turn % 2 == 0:
         return fg.lightblue('Your turn...')
@@ -27,11 +31,13 @@ def turn_msg(turn):
         return fg.red('Calvin\'s turn...')
 
 
-def display(board, turn, winner):
+def display(board, turn, winner, draw=False):
     clear_screen()
 
     if winner:
         print(winner_msg(winner))
+    elif draw:
+        print(draw_msg())
     else:
         print(turn_msg(turn))
 
