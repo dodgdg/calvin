@@ -114,7 +114,7 @@ def ab_negamax(game, depth, a, b, player, heuristic, top_level=False):
     value = -2000.0
     best = moves[0]
     for move in moves:
-        trial = -ab_negamax(game.move(move), depth-1, -b, -a, -player, heuristic) + 0.01 * depth * player
+        trial = -ab_negamax(game.move(move), depth-1, -b, -a, -player, heuristic) - 0.01 * depth * player
         if trial > value:
             value = trial
             best = move
