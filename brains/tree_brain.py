@@ -8,8 +8,7 @@ VALUE_GRID = np.array([[sum(map(lambda x:len(x[0])-(CONNECT-1), WINNING_LINES[(x
                         for y in range(HEIGHT)]
                        for x in range(WIDTH)])
 
-
-MAX_DEPTH = 4
+calls = 0
 
 
 # We use this as a heuristic
@@ -80,6 +79,8 @@ def lines_heuristic(game):
 
 
 def get_move(game, heuristic, depth=None):
+    global calls
+
     # JUST FOR SPEED
     ###
     # Be careful for seeing a 'block' before a win:
@@ -94,16 +95,29 @@ def get_move(game, heuristic, depth=None):
     ###
     # NOW THE REAL BRAIN
 
-    depth = depth or MAX_DEPTH
-
     player = -1.0 if game.turn % 2 == 1 else 1.0
 
-    score, move = ab_negamax(game, depth, -2000.0, 2000.0, player, heuristic, top_level=True)
-    # print(score)
+    if depth is not None:
+        score, move = ab_negamax(game, depth, -2000.0, 2000.0, player, heuristic, top_level=True)
+        # print(f'pos score: {score}')
+        return move
+
+    calls = 0
+    depth = 4
+
+    while True:
+        score, move = ab_negamax(game, depth, -2000.0, 2000.0, player, heuristic, top_level=True)
+        if calls > 5000 or abs(score) > 900:
+            # print(f'eval={score} after {calls} calls to depth {depth}')
+            break
+        depth += 2
     return move
 
 
 def ab_negamax(game, depth, a, b, player, heuristic, top_level=False):
+    global calls
+    calls += 1
+
     if depth == 0 or game.winner:
         return player * heuristic(game)
 
@@ -133,4 +147,4 @@ if __name__ == '__main__':
 
     g = Game().move(2).move(1).move(2).move(4).move(2).move(3).move(3)
 
-    lines_sum(g.board)
+    weighted_lines_sum(g.board)
