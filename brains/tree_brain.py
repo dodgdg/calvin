@@ -9,7 +9,7 @@ VALUE_GRID = np.array([[sum(map(lambda x:len(x[0])-(CONNECT-1), WINNING_LINES[(x
                        for x in range(WIDTH)])
 
 
-MAX_DEPTH = 4  # think this should be odd as our heuristic varies a lot from move to move
+MAX_DEPTH = 4  # think this should be even as our heuristic varies a lot from move to move
 
 
 # We use this as a heuristic

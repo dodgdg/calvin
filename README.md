@@ -1,2 +1,2 @@
 # calvin
-Simple AI for connect four from scratch
+Simple GUI and AI for connect four from scratch
