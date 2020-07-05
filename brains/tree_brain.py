@@ -31,20 +31,14 @@ def get_move(game, depth=None):
     if game.turn % 2 == 0:
         depth -= 1  # heuristic depends on both players having same number of counters (I think)
 
-    player = 1.0 if game.turn % 2 == 1 else -1.0
+    player = -1.0 if game.turn % 2 == 1 else 1.0
 
-    moves = game.moves()
-    scores = [(m, ab_negamax(game.move(m), depth, -2000.0, 2000.0, player))
-              for m in moves]
+    score, move = ab_negamax(game, depth, -2000.0, 2000.0, player, top_level=True)
 
-    # print(scores)
-
-    best = min(s[1] for s in scores)
-    choices = [m for m, s in scores if s == best]
-    return np.random.choice(choices)
+    return move
 
 
-def ab_negamax(game, depth, a, b, player):
+def ab_negamax(game, depth, a, b, player, top_level=False):
     if depth == 0 or game.winner:
         return player * heuristic(game)
 
@@ -53,11 +47,19 @@ def ab_negamax(game, depth, a, b, player):
         return player * heuristic(game)
 
     value = -2000.0
+    best = moves[0]
     for move in moves:
-        value = max(value, -ab_negamax(game.move(move), depth-1, -b, -a, -player))
+        trial = -ab_negamax(game.move(move), depth-1, -b, -a, -player)
+        if trial > value:
+            value = trial
+            best = move
         a = max(a, value)
         if a >= b:
             break
+
+    if top_level:
+        return value, best
+
     return value
 
 
