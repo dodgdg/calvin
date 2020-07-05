@@ -9,7 +9,7 @@ VALUE_GRID = np.array([[sum(map(lambda x:len(x[0])-(CONNECT-1), WINNING_LINES[(x
                        for x in range(WIDTH)])
 
 
-MAX_DEPTH = 4  # think this should be even as our heuristic varies a lot from move to move
+MAX_DEPTH = 4
 
 
 # We use this as a heuristic
@@ -85,9 +85,6 @@ def get_move(game, heuristic, depth=None):
             return move
 
     depth = depth or MAX_DEPTH
-
-    if game.turn % 2 == 0:
-        depth -= 1  # heuristic depends on both players having same number of counters (I think)
 
     player = -1.0 if game.turn % 2 == 1 else 1.0
 
