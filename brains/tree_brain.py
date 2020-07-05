@@ -34,7 +34,7 @@ def get_move(game, depth=None):
     player = -1.0 if game.turn % 2 == 1 else 1.0
 
     score, move = ab_negamax(game, depth, -2000.0, 2000.0, player, top_level=True)
-
+    # print(score)
     return move
 
 
@@ -49,7 +49,7 @@ def ab_negamax(game, depth, a, b, player, top_level=False):
     value = -2000.0
     best = moves[0]
     for move in moves:
-        trial = -ab_negamax(game.move(move), depth-1, -b, -a, -player)
+        trial = -ab_negamax(game.move(move), depth-1, -b, -a, -player) + 0.01 * depth * player
         if trial > value:
             value = trial
             best = move
