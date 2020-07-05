@@ -5,8 +5,8 @@ from core.game import Game
 from view.console_view import display
 # from view.debug_view import display
 
-# from brains.simple_brain import get_move
-from brains.tree_brain import get_move
+import brains.simple_brain as simple
+import brains.tree_brain as tree
 
 
 def main():
@@ -26,20 +26,12 @@ def main():
             # person move
             col = wait_key(tuple(map(str, game.moves()+1)))
             game = game.move(int(col) - 1)
-            # move = get_move(game, depth=6)
+            # move = tree.get_move(game, tree.position_heuristic, depth=4)
             # game = game.move(move)
 
         else:
             # calvin move
-
-            # bit of speed optimisation:
-            if game.turn < 8:
-                depth = 4  # opening
-            elif len(game.moves()) < 5:  # endgame
-                depth = 10
-            else:
-                depth = 6  # middlegame
-            move = get_move(game, depth=depth)
+            move = tree.get_move(game, tree.lines_heuristic, depth=4)
             game = game.move(move)
 
 

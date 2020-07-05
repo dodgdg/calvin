@@ -17,7 +17,7 @@ def position_sum(board):
     return (board * VALUE_GRID).sum()
 
 
-def heuristic(game):
+def position_heuristic(game):
     if game.winner == 1:
         return 1000.0
     if game.winner == 2:
@@ -25,7 +25,65 @@ def heuristic(game):
     return position_sum(game.board)
 
 
-def get_move(game, depth=None):
+def get_all_lines(width, height, connect):
+    lines = []
+    # add these lines for each point if they lie on the board:
+    #        VERT
+    #        X     X SWNE
+    #        X   X
+    #        X X
+    #        O X X X X HORI
+    #          X
+    #            X
+    #              X NWSE
+
+    for x in range(width):
+        for y in range(height):
+            # horizontal
+            if x <= width - connect:
+                lines.append((range(x, x+connect),
+                              y))
+            # vertical
+            if y <= height - connect:
+                lines.append((x,
+                              range(y, y+connect)))
+            # swne
+            if x <= width - connect and y <= height - connect:
+                lines.append((range(x, x + connect),
+                              range(y, y + connect)))
+            # nwse
+            if x <= width - connect and y >= connect - 1:
+                lines.append((range(x, x + connect),
+                              range(y - (connect - 1), y+1)))
+    return lines
+
+
+ALL_LINES = get_all_lines(WIDTH, HEIGHT, CONNECT)
+
+
+def lines_sum(board):
+    total_score = 0.0
+    for line in ALL_LINES:
+        candidate = board[line]
+        score = candidate.sum()
+        if abs(score) == abs(candidate).sum():
+            total_score += score
+    return total_score
+
+
+def lines_heuristic(game):
+    if game.winner == 1:
+        return 1000.0
+    if game.winner == 2:
+        return -1000.0
+    return lines_sum(game.board)
+
+
+def get_move(game, heuristic, depth=None):
+    for move in game.moves():
+        if game.move(move).winner or game.skip().move(move).winner:
+            return move
+
     depth = depth or MAX_DEPTH
 
     if game.turn % 2 == 0:
@@ -33,12 +91,12 @@ def get_move(game, depth=None):
 
     player = -1.0 if game.turn % 2 == 1 else 1.0
 
-    score, move = ab_negamax(game, depth, -2000.0, 2000.0, player, top_level=True)
+    score, move = ab_negamax(game, depth, -2000.0, 2000.0, player, heuristic, top_level=True)
     # print(score)
     return move
 
 
-def ab_negamax(game, depth, a, b, player, top_level=False):
+def ab_negamax(game, depth, a, b, player, heuristic, top_level=False):
     if depth == 0 or game.winner:
         return player * heuristic(game)
 
@@ -49,7 +107,7 @@ def ab_negamax(game, depth, a, b, player, top_level=False):
     value = -2000.0
     best = moves[0]
     for move in moves:
-        trial = -ab_negamax(game.move(move), depth-1, -b, -a, -player) + 0.01 * depth * player
+        trial = -ab_negamax(game.move(move), depth-1, -b, -a, -player, heuristic) + 0.01 * depth * player
         if trial > value:
             value = trial
             best = move
@@ -68,4 +126,4 @@ if __name__ == '__main__':
 
     g = Game().move(2).move(1).move(2).move(4).move(2).move(3).move(3)
 
-    get_move(g)
+    sum_lines(g.board)
