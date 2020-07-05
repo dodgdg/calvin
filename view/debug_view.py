@@ -8,9 +8,10 @@ def disp(num):
     return ' '
 
 
-def display(board, turn, winner):
+def display(board, turn, winner, draw):
     print('===')
     print(f'winner={winner}')
+    print(f'draw={draw}')
     print(f'turn={turn} ({"player" if turn % 2 == 0 else "calvin"})')
     print()
     for row in board.board.T[::-1]:
