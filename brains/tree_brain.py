@@ -85,7 +85,7 @@ def get_move(game, heuristic, depth=None):
     # Be careful for seeing a 'block' before a win:
     # check for wins first:
     for m in game.moves():
-        if game.move(m).winner or game.skip().move(m).winner:
+        if game.move(m).winner:
             return m
     # then for blocking moves:
     for m in game.moves():
