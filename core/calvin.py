@@ -17,7 +17,7 @@ def main():
         winner = game.winner
         draw = (len(game.moves()) == 0)
 
-        display(game, turn=game.turn, winner=winner, draw=draw)
+        display(game, winner=winner, draw=draw)
 
         if winner or draw:
             break
