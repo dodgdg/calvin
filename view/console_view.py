@@ -31,7 +31,7 @@ def turn_msg(turn):
         return fg.red('Calvin\'s turn...')
 
 
-def display(board, turn, winner, draw=False):
+def display(game, winner, draw=False):
     clear_screen()
 
     if winner:
@@ -39,13 +39,13 @@ def display(board, turn, winner, draw=False):
     elif draw:
         print(draw_msg())
     else:
-        print(turn_msg(turn))
+        print(turn_msg(game.turn))
 
-    print(fg.lightpurple(' '.join(map(str, range(1, board.width + 1)))))
-    print(fg.lightgreen(bg.lightgreen('  ') * board.width))
+    print(fg.lightpurple(' '.join(map(str, range(1, game.width + 1)))))
+    print(fg.lightgreen(bg.lightgreen('  ') * game.width))
 
-    for row in board.board.T[::-1]:
+    for row in game.board.T[::-1]:
         print(' '.join((map(color, row))))
 
-    print(fg.lightgreen(bg.lightgreen('  ') * board.width))
-    print(fg.lightpurple(' '.join(map(str, range(1, board.width + 1)))))
+    print(fg.lightgreen(bg.lightgreen('  ') * game.width))
+    print(fg.lightpurple(' '.join(map(str, range(1, game.width + 1)))))
