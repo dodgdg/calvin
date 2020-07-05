@@ -66,7 +66,7 @@ def lines_sum(board):
     for line in ALL_LINES:
         candidate = board[line]
         score = candidate.sum()
-        if abs(score) == abs(candidate).sum():
+        if abs(score) and abs(score) == abs(candidate).sum():
             total_score += score
     return total_score
 
@@ -133,4 +133,4 @@ if __name__ == '__main__':
 
     g = Game().move(2).move(1).move(2).move(4).move(2).move(3).move(3)
 
-    sum_lines(g.board)
+    lines_sum(g.board)
