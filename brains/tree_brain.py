@@ -80,9 +80,19 @@ def lines_heuristic(game):
 
 
 def get_move(game, heuristic, depth=None):
-    for move in game.moves():
-        if game.move(move).winner or game.skip().move(move).winner:
-            return move
+    # JUST FOR SPEED
+    ###
+    # Be careful for seeing a 'block' before a win:
+    # check for wins first:
+    for m in game.moves():
+        if game.move(m).winner or game.skip().move(m).winner:
+            return m
+    # then for blocking moves:
+    for m in game.moves():
+        if game.skip().move(m).winner:
+            return m
+    ###
+    # NOW THE REAL BRAIN
 
     depth = depth or MAX_DEPTH
 
